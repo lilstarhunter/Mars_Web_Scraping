@@ -13,55 +13,77 @@ def scrape():
     
     ##======= Nasa Mars News ========##
     browser.visit("https://mars.nasa.gov/news")
+    
+    #Create a soup object 
     html = browser.html
-    soup = BeautifulSoup(html, 'html.parser')
-    articles = soup.find_all("li", class_="slide")
+    soup = BeautifulSoup(html, 'lxml')
+    
+    # Find all headlines
+    articles = soup.findAll("li", class_="slide")
     titles = []
     teasers = []
 
+    #Loop through headlines to scrape titles and teasers
     for article in articles:
         title = article.find('div', class_="content_title").text
         titles.append(title)
-        teaser = article.find('a').text
+        teaser = article.find('div', class_="article_teaser_body").text
         teasers.append(teaser)
 
+    #Append to the Mars Dictionary
     mars_dict.update({"titles": titles, "teasers": teasers})
 
     ##======= JPL Mars Space Images ========##
     browser.visit("https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars")
+    
+    #Create a soup object 
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
 
+    #Use splinter to click on full image then open more info page
     browser.find_by_id('full_image').first.click()
     pic = browser.links.find_by_partial_text("more info")
     pic.click()
 
+    #Reset soup object
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
 
+    #Scrape image url
     img_url = soup.select_one("figure.lede a img").get("src")
     feat_img_url = "https://www.jpl.nasa.gov" + img_url
 
-    mars_dict.update({"feat_img_url": feat_img_url})
+    #Update dictionary with featured image url
+    mars_dict.update({"Featured_Image_URL": feat_img_url})
 
     ##======= Mars Facts ========##
     url = 'https://space-facts.com/mars'
+    
+    #Convert url tables to pandas dataframe
     tables = pd.read_html(url)
+    
+    #change column names
     df = tables[0]
     df.columns = ['Mars Planet Profile', 'Value']
+    
+    #Convert table to html
     html_table = df.to_html()
     html_table.replace('\n', '')
     mars_table = df.to_html('table.html')
-    mars_dict.update({"mars_table": mars_table})
+
+    #Update Dictionary
+    mars_dict.update({"Mars_Facts_Table": mars_table})
 
     ##======= Mars Hemispheres ========##
     main_url = 'https://astrogeology.usgs.gov'
     hemis_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 
+    #Create Beautiful Soup Object
     browser.visit(hemis_url)
     hemis_html = browser.html
     hemis_soup = BeautifulSoup(hemis_html, 'html.parser')
 
+    #Find hemispheres 
     all_hemis = hemis_soup.find('div', class_='collapsible results')
     mars_hemis = all_hemis.find_all('div', class_='item')
 
@@ -93,8 +115,7 @@ def scrape():
         mars_dict.update({"image_dict": image_dict})
 
 
-    return mars_dict
-    print(mars_dict)
+    return print(mars_dict)
 
 scrape()
     

@@ -1,23 +1,26 @@
 from flask import Flask, render_template, redirect
-from flask_pymongo import PyMongo
+from flask import jsonify
+from .scrape_mars import mars_info
+from pymongo import MongoClient
 
 app = Flask(__name__)
 
-# Use flask_pymongo to set up mongo connection
-app.config["MONGO_URI"] = "mongodb://localhost:27017"
-mongo = PyMongo(app)
+# Set up mongo connection
+MONGO_URI = "mongodb://localhost:27017/"
+
+client = MongoClient(MONGO_URI)
 
 db = client.mars_db
 
-mars_db.insert_one(mars_dict)
 
 @app.route("/")
-def index():
-    info = mongo.db.listings.find_one()
-    return render_template("index.html", listings=listings)
-
+def echo():
+    return render_template("index.html", text="Mission to Mars")
 
 @app.route("/scrape")
+def scrape():
+    return jsonify(mars_info())
+
 
 if __name__ == "__main__":
     app.run(debug=True)

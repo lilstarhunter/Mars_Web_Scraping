@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 import time
 
-def scrape():
+def mars_info():
     executable_path = {'executable_path': '/chromedriver'}
     browser = Browser('chrome', **executable_path, headless=False)
     
@@ -73,6 +73,7 @@ def scrape():
 
     #Update Dictionary
     mars_dict.update({"Mars_Facts_Table": mars_table})
+    time.sleep(2)
 
     ##======= Mars Hemispheres ========##
     main_url = 'https://astrogeology.usgs.gov'
@@ -115,8 +116,6 @@ def scrape():
         mars_dict.update({"image_dict": image_dict})
 
 
-    return print(mars_dict)
-
-scrape()
+    return mars_dict
     
 

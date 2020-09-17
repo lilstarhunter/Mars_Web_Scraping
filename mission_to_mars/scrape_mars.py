@@ -90,10 +90,11 @@ def scrape():
         
         hemi_img_urls.append(image_dict)
 
-        mars_dict.update("image_dict": image_dict)
+        mars_dict.update({"image_dict": image_dict})
 
 
-    return print(mars_dict)
+    return mars_dict
+    print(mars_dict)
 
 scrape()
     

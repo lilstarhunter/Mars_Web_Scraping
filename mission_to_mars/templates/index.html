@@ -8,9 +8,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mission to Mars!</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  
+  <!-- JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </head>
 
 <div class="container">
@@ -20,20 +22,20 @@
     <p class="lead">Insert Quick Description</p>
     <hr class="my-4">
     <p class="lead">
-      <a class="btn btn-dark btn-outline-light" href="./scrape" role="button">Scrape New Data</a>
+      <a class="btn btn-dark btn-outline-light" href="scrape" role="button">Scrape New Data</a>
     </p>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <h3>Latest Mars News</h3>
+      <h2 style = "color:rgb(210, 93, 31)">Latest Mars News</h3>
       <hr>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
       <h4>{{mars.titles[0]}}</h4>
-      <p>{{mars.teasers}}</p>
+      <p>{{mars.teasers[0]}}</p>
     </div>
   </div>
 <hr>

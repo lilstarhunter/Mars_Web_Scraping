@@ -115,7 +115,6 @@ def mars_info():
 
         mars_dict.update({"image_dict": image_dict})
 
-
     return mars_dict
     
 

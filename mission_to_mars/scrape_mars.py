@@ -76,15 +76,7 @@ def mars_info():
     time.sleep(2)
 
     ##======= Mars Hemispheres ========##
-    main_url = 'https://astrogeology.usgs.gov'
-    hemis_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-
-    #Create Beautiful Soup Object
-    browser.visit(hemis_url)
-    hemis_html = browser.html
-    hemis_soup = BeautifulSoup(hemis_html, 'html.parser')
-
-    #Find hemispheres 
+    # Mars Hemispheres Data Page Links
     all_hemis = hemis_soup.find('div', class_='collapsible results')
     mars_hemis = all_hemis.find_all('div', class_='item')
 
@@ -113,7 +105,7 @@ def mars_info():
         
         hemi_img_urls.append(image_dict)
 
-        mars_dict.update({"image_dict": image_dict})
+    mars_dict.update({"image_dict": hemi_img_urls})
 
     return mars_dict
     

@@ -62,20 +62,34 @@ def mars_info():
     #Convert url tables to pandas dataframe
     tables = pd.read_html(url)
     
-    #change column names
-    df = tables[0]
-    df.columns = ['Mars Planet Profile', 'Value']
+    #Select first table
+    mars_profile = tables[0]
     
-    #Convert table to html
-    html_table = df.to_html()
-    html_table.replace('\n', '')
-    mars_table = df.to_html('table.html')
+    #Convert Mars Profile table to an html table
+    mars_html_table = mars_profile.to_html()
+
+    #Clean up table
+    mars_html_table.replace('\n', '')
+
+    #Save directly to file
+    mars_profile.to_html('mars_profile.html')
 
     #Update Dictionary
-    mars_dict.update({"Mars_Facts_Table": mars_table})
+    mars_dict.update({"Mars_Facts_Table": mars_profile})
     time.sleep(2)
 
     ##======= Mars Hemispheres ========##
+    # Mars hemisphere name and image to be scraped
+    main_url = 'https://astrogeology.usgs.gov'
+    hemis_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    time.sleep(2)
+
+    #Create Soup Object
+    browser.visit(hemis_url)
+
+    hemis_html = browser.html
+    hemis_soup = BeautifulSoup(hemis_html, 'lxml')
+
     # Mars Hemispheres Data Page Links
     all_hemis = hemis_soup.find('div', class_='collapsible results')
     mars_hemis = all_hemis.find_all('div', class_='item')

@@ -74,10 +74,10 @@
           {% for hemisphere in mars.image_dict %} 
             <div class="col-6 border">
               <div>
-                <h4> {{ hemisphere.title | safe }} </h4>  
+                <h4> "{{ hemisphere.title }}" </h4>  
               </div>  
               <div>
-                  <img width="512 px" height="512 px" src={{ hemisphere.img_url | safe }}>
+                  <img width="512 px" height="512 px" src= "{{ hemisphere.img_url }}">
               </div>
  
           

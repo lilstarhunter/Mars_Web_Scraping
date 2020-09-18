@@ -9,7 +9,6 @@ def mars_info():
     executable_path = {'executable_path': '/chromedriver'}
     browser = Browser('chrome', **executable_path, headless=False)
     
-    mars_dict = {}
     
     ##======= Nasa Mars News ========##
     browser.visit("https://mars.nasa.gov/news")
@@ -30,10 +29,9 @@ def mars_info():
         teaser = article.find('div', class_="article_teaser_body").text
         teasers.append(teaser)
 
-    #Append to the Mars Dictionary
-    mars_dict.update({"titles": titles, "teasers": teasers})
 
-    ##======= JPL Mars Space Images ========##
+    ##========== JPL Nasa =============##
+    ##=================================##
     browser.visit("https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars")
     
     #Create a soup object 
@@ -51,76 +49,78 @@ def mars_info():
 
     #Scrape image url
     img_url = soup.select_one("figure.lede a img").get("src")
-    feat_img_url = "https://www.jpl.nasa.gov" + img_url
+    feat_image_url = "https://www.jpl.nasa.gov" + img_url
 
-    #Update dictionary with featured image url
-    mars_dict.update({"Featured_Image_URL": feat_img_url})
 
-    ##======= Mars Facts ========##
+    ##========== Mars Facts ===========##
+    ##=================================##
     url = 'https://space-facts.com/mars'
     
     #Convert url tables to pandas dataframe
-    tables = pd.read_html(url)
+    table = pd.read_html(url)
     
-    #Select first table
-    mars_profile = tables[0]
+    #Reset Index to Attribute
+    mars_facts = table[1]
+    mars_facts.columns = ["Attribute", "Value"]
+    mars_facts = mars_facts.set_index("Attribute")
     
     #Convert Mars Profile table to an html table
-    mars_html_table = mars_profile.to_html()
+    mars_facts = mars_facts.to_html(classes="table table-striped")
 
-    #Clean up table
-    mars_html_table.replace('\n', '')
-
-    #Save directly to file
-    mars_profile.to_html('mars_profile.html')
-
-    #Update Dictionary
-    mars_dict.update({"Mars_Facts_Table": mars_profile})
-    time.sleep(2)
+    time.sleep(5)
 
     ##======= Mars Hemispheres ========##
-    # Mars hemisphere name and image to be scraped
-    main_url = 'https://astrogeology.usgs.gov'
-    hemis_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-    time.sleep(2)
+    ##=================================##
+     # Visit USGS webpage for Mars hemispehere images
+    hemispheres_url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+    browser.visit(hemispheres_url)
+    html = browser.html
 
-    #Create Soup Object
-    browser.visit(hemis_url)
+    # Parse HTML with Beautiful Soup
+    soup = BeautifulSoup(html, "html.parser")
 
-    hemis_html = browser.html
-    hemis_soup = BeautifulSoup(hemis_html, 'lxml')
+    # Create dictionary to store titles & links to images
+    hemisphere_image_urls = []
 
-    # Mars Hemispheres Data Page Links
-    all_hemis = hemis_soup.find('div', class_='collapsible results')
-    mars_hemis = all_hemis.find_all('div', class_='item')
+    # Retrieve all elements that contain image information
+    results = soup.find("div", class_ = "result-list" )
+    hemispheres = results.find_all("div", class_="item")
+    
+    # Iterate through each image
+    for hemisphere in hemispheres:
 
-    hemi_img_urls = []
+        #Scrape and clean title
+        title = hemisphere.find("h2").text
+        title = title.replace("Enhanced", "")
 
-    # Loop through the main hemisphere data page
-    for hemi in mars_hemis:
-        # Collect Title
-        hemisphere = hemi.find('div', class_="description")
-        title = hemisphere.h3.text
+        #Get Image Link
+        hemi_link = hemisphere.find("a")["href"]
+        image_link = "https://astrogeology.usgs.gov/" + hemi_link    
+
+        #Go to image link and set BeautifulSoup object
+        browser.visit(image_link)
+        html = browser.html
+        soup = BeautifulSoup(html, "html.parser")
+
+        #Find image download and grab href
+        downloads = soup.find("div", class_="downloads")
+        image_url = downloads.find("a")["href"]
+
+        #Add ttitle and image url to hemisphere dictionary
+        hemisphere_image_urls.append({"title": title, "img_url": image_url})
         
-        # Scrape image links on hemisphere page
-        hemi_link = hemi.a["href"]    
-        browser.visit(main_url + hemi_link)
+        browser.back()
         
-        image_html = browser.html
-        image_soup = BeautifulSoup(image_html, 'html.parser')
-        
-        image_link = image_soup.find('div', class_='downloads')
-        image_url = image_link.find('li').a['href']
+    #=========STORE DATA IN FINAL DICTIONARY=============#
 
-        # Create Dictionary to with key: title and value: url info
-        image_dict = {}
-        image_dict['title'] = title
-        image_dict['img_url'] = image_url
-        
-        hemi_img_urls.append(image_dict)
+    mars_data = {
+        "titles": titles,
+        "teasers": teasers,
+        "featured_image_url": feat_image_url,
+        "mars_facts": mars_facts,
+        "hemisphere_image_urls": hemisphere_image_urls
+    }
 
-    mars_dict.update({"image_dict": hemi_img_urls})
-
-    return mars_dict
+    return mars_data
     
 

@@ -8,7 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mission to Mars!</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  
+
   <!-- JS, Popper.js, and jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -19,16 +19,16 @@
 
   <div class="jumbotron text-center border-bottom">
     <h1 class="font-weight-bold">Mission to Mars</h1>
-    <p class="lead">Insert Quick Description</p>
+    <!-- <p class="lead">Insert Quick Description</p> -->
     <hr class="my-4">
     <p class="lead">
-      <a class="btn btn-dark btn-outline-light" href="scrape" role="button">Scrape New Data</a>
+      <a class="btn btn-dark btn-outline-light" href="/scrape" role="button">Scrape New Data</a>
     </p>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <h2 style = "color:rgb(210, 93, 31)">Top 5 Mars News Artciles</h3>
+      <h2 style = "color:rgb(210, 93, 31)">Featured Mars News Article</h3>
       <hr>
     </div>
   </div>
@@ -36,14 +36,6 @@
     <div class="col-md-12">
       <h4>{{mars.titles[0]}}</h4>
       <p>{{mars.teasers[0]}}</p>
-      <h4>{{mars.titles[1]}}</h4>
-      <p>{{mars.teasers[1]}}</p>
-      <h4>{{mars.titles[2]}}</h4>
-      <p>{{mars.teasers[2]}}</p>
-      <h4>{{mars.titles[3]}}</h4>
-      <p>{{mars.teasers[3]}}</p>
-      <h4>{{mars.titles[4]}}</h4>
-      <p>{{mars.teasers[4]}}</p>
     </div>
   </div>
 <hr>
@@ -51,15 +43,16 @@
     <div class="col-md-8">
       <h2 class="">Featured Mars Image</h2> 
       </br>
-      <img class="img-responsive rounded" src={{mars.Featured_Image_URL}} alt="Features Mars Image" width="100%" height="auto">
+      <img class="img-responsive rounded" src={{mars.featured_image_url}} alt="Features Mars Image" width="100%" height="auto">
     </div>
-    <div class="col-md-4">
-        <h2>Mars Facts</h2>
-        <br>
-        <table class="table-dark">
-          {{ mars.Mars_Facts_Table | safe }}
-        </table>
-          
+    <div class="col-md-4" style="padding-top: 20px;">
+            <div class="row" style="padding-left: 16px;">
+              <h3 class="header" > Mars Facts</h3>
+                <table class= table>
+                  {{mars.mars_facts | safe}}
+                </table>
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -71,13 +64,13 @@
   </div>
   </br>
   <div class="row">       
-          {% for hemisphere in mars.image_dict %} 
+          {% for i in mars.mars_facts %} 
             <div class="col-6 border">
               <div>
-                <h4> "{{ hemisphere.title }}" </h4>  
+                <h4> {{ i.title }} </h4>  
               </div>  
               <div>
-                  <img width="512 px" height="512 px" src= "{{ hemisphere.img_url }}">
+                  <img src= "{{i.img_url}}" >
               </div>
  
           

@@ -18,17 +18,16 @@
 <div class="container fluid">
 
   <div class="jumbotron text-center border-bottom">
-    <h1 class="font-weight-bold">Mission to Mars</h1>
-    <!-- <p class="lead">Insert Quick Description</p> -->
+    <h1 class="display-2">Mission to Mars</h1>
     <hr class="my-4">
     <p class="lead">
-      <a class="btn btn-dark btn-outline-light" href="/scrape" role="button">Scrape New Data</a>
+      <a class="shadow- p-3 mb-5 bg-black rounded btn btn-dark btn-outline-light" href="/scrape" role="button">Scrape New Data</a>
     </p>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <h2 style = "color:rgb(210, 93, 31)">Featured Mars News Article</h3>
+      <h2 class="display-4" style = "color:rgb(210, 93, 31)">Featured Mars News Article</h3>
       <hr>
     </div>
   </div>
@@ -41,13 +40,13 @@
 <hr>
   <div class="row">
     <div class="col-md-8">
-      <h2 class="">Featured Mars Image</h2> 
+      <h2 class="display-4 text-center">Featured Mars Image</h2> 
       </br>
-      <img class="img-responsive rounded" src={{mars.featured_image_url}} alt="Features Mars Image" width="100%" height="auto">
+      <img class="img-responsive rounded shadow-lg p-1mb-5 bg-black rounded" src={{mars.featured_image_url}} alt="Features Mars Image" width="100%" height="auto">
     </div>
-    <div class="col-md-4" style="padding-top: 20px;">
+    <div class="col-md-4 text-center" style="padding-top: 20px;">
             <div class="row" style="padding-left: 16px;">
-              <h3 class="header" > Mars Facts</h3>
+              <h3 class="display-4 text-center">Mars Facts</h3>
                 <table class= table>
                   {{mars.mars_facts | safe}}
                 </table>
@@ -58,19 +57,19 @@
   </div>
 <hr>
   <div class="row">
-    <div class="col-md-8 offset-4">
-      <h2 class="align-items-center"><u>Mars Hemispheres</u></h2>  
+    <div class="col-md-12 col-sm-6">
+      <h2 class="display-4 text-center">Mars Hemispheres</h2>  
     </div>
   </div>
   </br>
   <div class="row">       
-          {% for i in mars.mars_facts %} 
+          {% for i in mars.hemisphere_image_urls %} 
             <div class="col-6 border">
               <div>
-                <h4> {{ i.title }} </h4>  
+                <h4 class = "text-center"> {{ i.title }} </h4>  
               </div>  
-              <div>
-                  <img src= {{i.img_url}}" >
+              <div class = "text-center rounded mx-auto d-block">
+                  <img class= "img-responsive rounded" src={{i.img_url}} width="500">
               </div>
  
           

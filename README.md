@@ -5,7 +5,7 @@
 <img src="mission_to_mars/images/mission_to_mars.png">
 ---
 
-## Step 1: Scraping
+# Step 1: Scraping
 
 * Utilize upyter Notebook, BeautifulSoup, Pandas, and Requests/Splinter to scrape data from various NASA webpages
 

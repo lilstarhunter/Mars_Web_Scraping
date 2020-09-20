@@ -4,6 +4,7 @@ from splinter import Browser
 from bs4 import BeautifulSoup
 import requests
 import time
+# from IPython.display import HTML
 
 
 def mars_info():
@@ -51,6 +52,8 @@ def mars_info():
     img_url = soup.select_one("figure.lede a img").get("src")
     feat_image_url = "https://www.jpl.nasa.gov" + img_url
 
+    browser.back()
+
     ##========== Mars Facts ===========##
     ##=================================##
     url = 'https://space-facts.com/mars'
@@ -59,22 +62,31 @@ def mars_info():
     table = pd.read_html(url)
 
     # Reset Index to Attribute
+    # Reset Index to Attribute
     mars_facts = table[0]
     mars_facts.columns = ["Attribute", "Value"]
-    mars_facts = mars_facts.set_index("Attribute")
+    mars_facts = mars_facts.to_html(index=False, index_names=False)
 
-    # Convert Mars Profile table to an html table
-    mars_facts = mars_facts.to_html(classes="table table-striped")
+    # Remove Index for HTML & Convert Mars Profile table to an html table
+    # mars_facts = HTML(mars_facts.to_html(index=False))
     time.sleep(5)
 
     ##======= Mars Hemispheres ========##
     ##=================================##
+    # Visit USGS webpage for Mars hemispehere images
+    hemispheres_url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+    browser.visit(hemispheres_url)
+    time.sleep(5)
+
+    html = browser.html
+
+    # Parse HTML with Beautiful Soup
+    soup = BeautifulSoup(html, "html.parser")
     # Create dictionary to store titles & links to images
     hemisphere_image_urls = []
 
     # Identifies the number of links (hemispheres)
     hemisphere_links = browser.find_by_css("a.product-item h3")
-    time.sleep(5)
     for i in range(len(hemisphere_links)):
 
         # Good for when navigato
